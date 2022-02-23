@@ -10,6 +10,7 @@
     --terciary-color: #DD7564;
     --ice: #F0EDE6;
     --gray: #47494A;
+    --light-gray: #a4a9ab;
     
     --cell-size: 10rem;
 }
@@ -43,11 +44,66 @@ main {
     width: 100%;
     height: 70%;
 
+    position: relative;
     display: flex;
+    flex-direction: column;
 
     align-items: center;
     align-content: center;
+    justify-content: space-around;
+}
+
+.winningScreen {
+    display: none;
+}
+
+.winningScreen.show {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+
+    background-color: var(--ice);
+    width: 90%;
+    height: 90%;
+
+    border-radius: 2rem;
+
+}
+
+.winningScreen.show .buttons {
+    display: flex;
+    width: 60%;
+    justify-content: space-around;
+    border: 1px solid black;
+}
+
+.winningScreen.show .buttons .btn {
+    border: 1px solid black;
+}
+
+.currentTurn {
+    width: 10rem;
+    height: 3rem;
+
+    border-radius: 3rem;
+
+    font-weight: 600;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--terciary-color);
+    color: var(--ice);
 }
 
 .gameBoard {
@@ -63,6 +119,13 @@ main {
     width: var(--cell-size);
     
     border: 0.4rem solid var(--main-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gameBoard .cell:hover {
+    cursor: pointer;
 }
 
 .gameBoard .cell:first-child,
@@ -85,6 +148,87 @@ main {
 .gameBoard .cell:nth-child(4),
 .gameBoard .cell:nth-child(7) {
     border-left: none;
+}
+
+.gameBoard .cell.x:hover,
+.gameBoard .cell.o:hover {
+    cursor: default;
+}
+
+.gameBoard .cell.x::before,
+.gameBoard .cell.x::after {
+    content: '';
+    position: absolute;
+    width: calc(var(--cell-size) * 0.1);
+    height: calc(var(--cell-size) * 0.85);
+    
+    background-color: var(--gray);
+    transform: rotate(45deg);
+}
+
+.gameBoard .cell.x::after {
+    transform: rotate(-45deg);
+}
+
+.gameBoard .cell.o::before {
+    content: '';
+    position: absolute;
+
+    width: calc(var(--cell-size) * 0.78);
+    height: calc(var(--cell-size) * 0.78);
+    border-radius: 50%;
+    
+    background-color: var(--gray);
+}
+
+.gameBoard .cell.o::after {
+    content: '';
+    position: absolute;
+
+    width: calc(var(--cell-size) * 0.6);
+    height: calc(var(--cell-size) * 0.6);
+    border-radius: 50%;
+    
+    background-color: var(--secondary-color);
+}
+
+.gameBoard.x .cell:not(.x, .o):hover::before,
+.gameBoard.x .cell:not(.x, .o):hover::after
+ {
+    content: '';
+    position: absolute;
+    width: calc(var(--cell-size) * 0.1);
+    height: calc(var(--cell-size) * 0.85);
+    
+    background-color: var(--light-gray);
+    transform: rotate(45deg);
+}
+
+.gameBoard.x .cell:not(.x, .o):hover::after {
+    transform: rotate(-45deg);
+}
+
+.gameBoard.o .cell:not(.x, .o):hover::before
+ {
+    content: '';
+    position: absolute;
+
+    width: calc(var(--cell-size) * 0.78);
+    height: calc(var(--cell-size) * 0.78);
+    border-radius: 50%;
+    
+    background-color: var(--light-gray);
+}
+
+.gameBoard.o .cell:not(.x, .o):hover::after {
+    content: '';
+    position: absolute;
+
+    width: calc(var(--cell-size) * 0.6);
+    height: calc(var(--cell-size) * 0.6);
+    border-radius: 50%;
+    
+    background-color: var(--secondary-color);
 }
 
 footer {
