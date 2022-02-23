@@ -1,12 +1,103 @@
-* {
+*, *::before, *::after {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
 
-body {
-    --main-color: #EC3F18;
-    --secondary-color: #D65C40;
-    --white: #FBFDFD;
+:root {
+    --main-color: #1FA5A6;
+    --secondary-color: #B2DEDD;
+    --terciary-color: #DD7564;
+    --ice: #F0EDE6;
     --gray: #47494A;
+    
+    --cell-size: 10rem;
+}
+
+body {
+    font-family: Poppins, sans-serif;
+    width: 100vw;
+    height: 100vh;
+
+    background-color: var(--secondary-color);
+}
+
+header {
+    display: flex;
+    width: 100%;
+    height: 15%;
+
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    align-self: center;
+    justify-content: center;
+}
+
+header h1 {
+    font-size: 3.2rem;
+    color: var(--gray);
+}
+
+main {
+    width: 100%;
+    height: 70%;
+
+    display: flex;
+
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.gameBoard {
+    width: calc(3 * var(--cell-size));
+    height: calc(3 * var(--cell-size));
+
+    display: grid;
+    grid-template-columns: var(--cell-size) var(--cell-size) var(--cell-size);
+}
+
+.gameBoard .cell {
+    height: var(--cell-size);
+    width: var(--cell-size);
+    
+    border: 0.4rem solid var(--main-color);
+}
+
+.gameBoard .cell:first-child,
+.gameBoard .cell:nth-child(2),
+.gameBoard .cell:nth-child(3) {
+    border-top: none;
+}
+
+.gameBoard .cell:nth-child(3n) {
+    border-right: none;
+}
+
+.gameBoard .cell:nth-child(7),
+.gameBoard .cell:nth-child(8),
+.gameBoard .cell:nth-child(9) {
+    border-bottom: none;
+}
+
+.gameBoard .cell:nth-child(1),
+.gameBoard .cell:nth-child(4),
+.gameBoard .cell:nth-child(7) {
+    border-left: none;
+}
+
+footer {
+    display: flex;
+    width: 100%;
+    height: 15%;
+
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.1rem;
+    font-weight: 400;
+
+    color: var(--gray)
 }
