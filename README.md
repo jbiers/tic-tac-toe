@@ -8,6 +8,10 @@ Tic-tac-toe project for The Odin Project course.
     . <script defer> and how the browser executes Javascript files.
 
 -- Implement change players functionality
+    -- Change players button
+    -- Form Validation
+    -- Create players based on input
+    -- Show players names
 -- Keep track of playes scores
 -- Detect draws
 -- Implement algorithm

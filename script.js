@@ -6,8 +6,8 @@ const gameBoard = (() => {
     const winningScreen = documentMain.querySelector('.winningScreen');
     const playAgainBtn = documentMain.querySelector('.playAgain');
     const newPlayers = documentMain.querySelector('.newPlayers');
-
     const changePlayersScreen = documentMain.querySelector('.changePlayersScreen');
+    const startGameBtn = documentMain.querySelector('.startGame');
 
     for (let i = 0; i < documentBoard.childElementCount; i++) {
         documentBoard.children[i].addEventListener('click',
@@ -21,6 +21,11 @@ const gameBoard = (() => {
     playAgainBtn.addEventListener('click', () => {
         resetGame();
     });
+
+    startGameBtn.addEventListener('click', () => {
+        startGame();
+    });
+
 
     // PLAYER STUFF
     const Player = function (name, symbol, AI) {
@@ -137,8 +142,8 @@ const gameBoard = (() => {
         }
     }
 
-    const toggleWinningScreen = function () {
-        winningScreen.classList.toggle('show');
+    const toggleScreen = function (screen) {
+        screen.classList.toggle('show');
 
         documentMain.children[0].classList.toggle('blur');
         documentMain.children[1].classList.toggle('blur');
@@ -149,13 +154,21 @@ const gameBoard = (() => {
 
         renderBoard();
         winningScreen.children[0].innerHTML = `${winner} wins this round!`
-        toggleWinningScreen();
+        toggleScreen(winningScreen);
         winCondition = false;
     };
 
     const resetGame = function () {
-        toggleWinningScreen();
+        toggleScreen(winningScreen);
         clearBoard();
         renderBoard();
     };
+
+    const startGame = function () {
+        toggleScreen(changePlayersScreen);
+        clearBoard();
+        renderBoard();
+    }
+
+    startGame();
 })();
