@@ -12,3 +12,4 @@ Tic-tac-toe project for The Odin Project course.
 -- Detect draws
 -- Implement algorithm
 -- Make it pretty
+-- Add responsiveness
