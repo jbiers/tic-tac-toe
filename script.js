@@ -4,6 +4,8 @@ const gameBoard = (() => {
     const documentBoard = documentMain.querySelector('.gameBoard');
     const currentTurnBtn = documentMain.querySelector('.currentTurn');
     const winningScreen = documentMain.querySelector('.winningScreen');
+    const playAgainBtn = documentMain.querySelector('.playAgain');
+    const newPlayers = documentMain.querySelector('.newPlayers');
 
     for (let i = 0; i < documentBoard.childElementCount; i++) {
         documentBoard.children[i].addEventListener('click',
@@ -13,6 +15,10 @@ const gameBoard = (() => {
                 };
             });
     };
+
+    playAgainBtn.addEventListener('click', () => {
+        resetGame();
+    });
 
     // PLAYER STUFF
     const Player = function (name, symbol, AI) {
@@ -39,7 +45,7 @@ const gameBoard = (() => {
             documentBoard.classList.replace('o', 'x');
         } else {
             documentBoard.classList.replace('x', 'o');
-        }
+        };
 
         for (let i = 0; i < board.length; i++) {
             if (board[i] === 'x' || board[i] === 'o') {
@@ -69,7 +75,12 @@ const gameBoard = (() => {
         renderBoard();
         renderCurrentTurnBtn();
         if (detectWin() === true) {
-            handleWin();
+            if (xTurn) {
+                handleWin('O');
+            } else {
+                handleWin('X');
+            }
+
         }
     };
 
@@ -118,14 +129,32 @@ const gameBoard = (() => {
         return winCondition;
     };
 
-    const handleWin = function () {
+    const clearBoard = function () {
         for (let i = 0; i < board.length; i++) {
             board[i] = '';
         }
+    }
+
+    const toggleWinningScreen = function () {
+        winningScreen.classList.toggle('show');
+        console.log(documentMain.children);
+
+        documentMain.children[0].classList.toggle('blur');
+        documentMain.children[1].classList.toggle('blur');
+    }
+
+    const handleWin = function (winner) {
+        clearBoard();
 
         renderBoard();
-        // make impossible to click
-        // display thing
-        winningScreen.classList.add('show');
-    }
+        winningScreen.children[0].innerHTML = `${winner} wins this round!`
+        toggleWinningScreen();
+        winCondition = false;
+    };
+
+    const resetGame = function () {
+        toggleWinningScreen();
+        clearBoard();
+        renderBoard();
+    };
 })();

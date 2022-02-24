@@ -6,3 +6,9 @@ Tic-tac-toe project for The Odin Project course.
     - Javascript Revealing Module Pattern and Factory Functions.
     - CSS grid.
     . <script defer> and how the browser executes Javascript files.
+
+-- Implement change players functionality
+-- Keep track of playes scores
+-- Detect draws
+-- Implement algorithm
+-- Make it pretty
