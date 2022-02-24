@@ -7,6 +7,8 @@ const gameBoard = (() => {
     const playAgainBtn = documentMain.querySelector('.playAgain');
     const newPlayers = documentMain.querySelector('.newPlayers');
 
+    const changePlayersScreen = documentMain.querySelector('.changePlayersScreen');
+
     for (let i = 0; i < documentBoard.childElementCount; i++) {
         documentBoard.children[i].addEventListener('click',
             e => {
@@ -137,7 +139,6 @@ const gameBoard = (() => {
 
     const toggleWinningScreen = function () {
         winningScreen.classList.toggle('show');
-        console.log(documentMain.children);
 
         documentMain.children[0].classList.toggle('blur');
         documentMain.children[1].classList.toggle('blur');
