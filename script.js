@@ -21,7 +21,8 @@ const gameBoard = (() => {
     for (let i = 0; i < documentBoard.childElementCount; i++) {
         documentBoard.children[i].addEventListener('click',
             e => {
-                if ((playerOneTurn && !playerOne.AI) || (!playerOne && !playerTwo.AI)) {
+                if ((playerOneTurn && !playerOne.AI) || (!playerOneTurn && !playerTwo.AI)) {
+                    console.log('click');
                     if (e.currentTarget.classList[2] !== 'x' && e.currentTarget.classList[2] !== '') {
                         populateBoard(e.currentTarget);
                     };
@@ -79,9 +80,9 @@ const gameBoard = (() => {
 
     const renderCurrentTurnBtn = function () {
         if (playerOneTurn) {
-            currentTurnBtn.innerHTML = `${playerOne.name}'s turn`;
+            currentTurnBtn.innerHTML = `${playerOne.name.toUpperCase()}'S TURN`;
         } else {
-            currentTurnBtn.innerHTML = `${playerTwo.name}'s turn`;
+            currentTurnBtn.innerHTML = `${playerTwo.name.toUpperCase()}'S TURN`;
         };
     };
 
@@ -214,7 +215,7 @@ const gameBoard = (() => {
         clearBoard();
 
         renderBoard();
-        winningScreen.children[0].innerHTML = `${winner} wins this round!`
+        winningScreen.children[0].innerHTML = `${winner.toUpperCase()} WINS THIS ROUND!`
         toggleScreen(winningScreen);
         winCondition = false;
     };
@@ -222,7 +223,7 @@ const gameBoard = (() => {
     const handleDraw = function () {
         clearBoard();
         renderBoard();
-        winningScreen.children[0].innerHTML = `Game ended in a draw!`;
+        winningScreen.children[0].innerHTML = `GAME ENDED IN A DRAW!`;
         toggleScreen(winningScreen);
 
         drawCondition = false;
