@@ -9,7 +9,7 @@ Tic-tac-toe project for The Odin Project course.
 
 -- Implement change players functionality
     -- Change players button
-    -- Form Validation
+    -- Form Validation ***********************
     -- Create players based on input
     -- Show players names
 -- Keep track of playes scores

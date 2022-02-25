@@ -8,6 +8,11 @@ const gameBoard = (() => {
     const newPlayers = documentMain.querySelector('.newPlayers');
     const changePlayersScreen = documentMain.querySelector('.changePlayersScreen');
     const startGameBtn = documentMain.querySelector('.startGame');
+    const playerOneInput = documentMain.querySelector('.playerOneName');
+    const playerTwoInput = documentMain.querySelector('.playerTwoName');
+
+    let playerOne;
+    let playerTwo;
 
     for (let i = 0; i < documentBoard.childElementCount; i++) {
         documentBoard.children[i].addEventListener('click',
@@ -26,16 +31,18 @@ const gameBoard = (() => {
         startGame();
     });
 
+    newPlayers.addEventListener('click', () => {
+        toggleScreen(winningScreen);
+        toggleScreen(changePlayersScreen);
+    });
+
 
     // PLAYER STUFF
     const Player = function (name, symbol, AI) {
-        return { name, symbol, AI, score: 0 };
+        return { name, symbol, AI };
     };
 
-    let playerOne = Player('Mike', 'x', false);
-    let playerTwo = Player('Jonas', 'o', false);
-
-    let xTurn = true;
+    let playerOneTurn = true;
 
     // GAME DATA
     const board = [
@@ -48,7 +55,7 @@ const gameBoard = (() => {
 
     // DISPLAY STUFF
     const renderBoard = function () {
-        if (xTurn) {
+        if (playerOneTurn) {
             documentBoard.classList.replace('o', 'x');
         } else {
             documentBoard.classList.replace('x', 'o');
@@ -64,30 +71,32 @@ const gameBoard = (() => {
     };
 
     const renderCurrentTurnBtn = function () {
-        if (xTurn) {
-            currentTurnBtn.innerHTML = 'X plays';
+        if (playerOneTurn) {
+            currentTurnBtn.innerHTML = `${playerOne.name}'s turn`;
         } else {
-            currentTurnBtn.innerHTML = 'O plays';
+            currentTurnBtn.innerHTML = `${playerTwo.name}'s turn`;
         };
     };
 
     const populateBoard = function (cell) {
-        if (xTurn) {
+        if (playerOneTurn) {
             board[parseInt(cell.classList[1])] = 'x';
         } else {
             board[parseInt(cell.classList[1])] = 'o';
         };
 
-        xTurn = !xTurn;
-        renderBoard();
-        renderCurrentTurnBtn();
+
         if (detectWin() === true) {
-            if (xTurn) {
-                handleWin('O');
+            if (playerOneTurn) {
+                handleWin(playerOne.name);
             } else {
-                handleWin('X');
+                handleWin(playerTwo.name);
             }
 
+        } else {
+            playerOneTurn = !playerOneTurn;
+            renderBoard();
+            renderCurrentTurnBtn();
         }
     };
 
@@ -159,15 +168,35 @@ const gameBoard = (() => {
     };
 
     const resetGame = function () {
+        renderCurrentTurnBtn();
         toggleScreen(winningScreen);
         clearBoard();
         renderBoard();
     };
 
     const startGame = function () {
-        toggleScreen(changePlayersScreen);
-        clearBoard();
-        renderBoard();
+        if (getInput() === true) {
+            renderCurrentTurnBtn();
+            toggleScreen(changePlayersScreen);
+            clearBoard();
+            renderBoard();
+        }
+    }
+
+    const getInput = function () {
+        let playerOneName = playerOneInput.value;
+        let playerTwoName = playerTwoInput.value;
+
+        if (playerOneName === '' || playerTwoName === '') {
+            // THIS WILL CHANGE
+            console.log('provide name');
+            return false;
+        } else {
+            playerOne = Player(playerOneName, 'x', false);
+            playerTwo = Player(playerTwoName, 'o', false);
+
+            return true;
+        }
     }
 
     startGame();
