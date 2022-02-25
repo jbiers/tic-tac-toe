@@ -10,6 +10,8 @@ const gameBoard = (() => {
     const startGameBtn = documentMain.querySelector('.startGame');
     const playerOneInput = documentMain.querySelector('.playerOneName');
     const playerTwoInput = documentMain.querySelector('.playerTwoName');
+    const playerOneFormValidation = documentMain.querySelector('.formValidation.one');
+    const playerTwoFormValidation = documentMain.querySelector('.formValidation.two');
 
     let playerOne;
     let playerTwo;
@@ -188,12 +190,27 @@ const gameBoard = (() => {
         let playerTwoName = playerTwoInput.value;
 
         if (playerOneName === '' || playerTwoName === '') {
-            // THIS WILL CHANGE
-            console.log('provide name');
+
+            if (playerOneName === '') {
+                playerOneFormValidation.classList.add('show');
+            } else {
+                playerOneFormValidation.classList.remove('show');
+            }
+
+            if (playerTwoName === '') {
+                playerTwoFormValidation.classList.add('show');
+            } else {
+                playerTwoFormValidation.classList.remove('show');
+            }
+
+
             return false;
         } else {
             playerOne = Player(playerOneName, 'x', false);
             playerTwo = Player(playerTwoName, 'o', false);
+
+            playerOneFormValidation.classList.remove('show');
+            playerTwoFormValidation.classList.remove('show');
 
             return true;
         }
