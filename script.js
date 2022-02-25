@@ -171,6 +171,54 @@ const gameBoard = (() => {
         return winCondition;
     };
 
+    let hypotheticalWin;
+
+    const detectHypotheticalWin = function (symbol) {
+        hypotheticalWin = false;
+
+        switch (true) {
+            case board[0] === symbol && (board[0] === board[1] && board[0] === board[2]):
+                hypotheticalWin = true;
+                break;
+            case board[3] === symbol && (board[3] === board[4] && board[3] === board[5]):
+                hypotheticalWin = true;
+                break;
+            case board[6] === symbol && (board[6] === board[7] && board[6] === board[8]):
+                hypotheticalWin = true;
+                break;
+
+            case board[0] === symbol && (board[0] === board[3] && board[0] === board[6]):
+                hypotheticalWin = true;
+                break;
+            case board[1] === symbol && (board[1] === board[4] && board[1] === board[7]):
+                hypotheticalWin = true;
+                break;
+            case board[2] === symbol && (board[2] === board[5] && board[2] === board[8]):
+                hypotheticalWin = true;
+                break;
+
+            case board[0] === symbol && (board[0] === board[4] && board[0] === board[8]):
+                hypotheticalWin = true;
+                break;
+            case board[2] === symbol && (board[2] === board[4] && board[2] === board[6]):
+                hypotheticalWin = true;
+                break;
+        };
+
+        return hypotheticalWin;
+    };
+
+    const detectHypotheticalDraw = function () {
+        for (let i = 0; i < board.length; i++) {
+            if (board[i] === '') {
+                return false;
+            };
+        };
+
+
+        return true;
+    };
+
     const detectDraw = function () {
         for (let i = 0; i < board.length; i++) {
             if (board[i] === '') {
@@ -199,16 +247,95 @@ const gameBoard = (() => {
     }
 
     const AImove = function (aiSymbol) {
+        let bestScore = 0;
+        let score = 0;
+        let bestMove = 0;
 
-        let randomGuess = Math.floor(Math.random() * (8 - 0 + 1) + 0);
+        if (aiSymbol === 'x') {
+            // maximizing
+            bestScore = -Infinity;
 
-        if (board[randomGuess] !== '') {
-            AImove(aiSymbol);
-        } else {
-            populateBoard(documentBoard.children[randomGuess]);
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === '') {
+                    board[i] = aiSymbol;
+                    score = minimax(board, false);
+                    board[i] = '';
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMove = i;
+                    };
+                };
+            };
 
+            populateBoard(documentBoard.children[bestMove]);
         }
 
+        else {
+            // minimizing
+            bestScore = Infinity;
+
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === '') {
+                    board[i] = aiSymbol;
+                    score = minimax(board, true);
+                    board[i] = '';
+                    if (score < bestScore) {
+                        bestScore = score;
+                        bestMove = i;
+                    };
+                };
+            };
+
+            populateBoard(documentBoard.children[bestMove]);
+        };
+    };
+
+    const minimax = function (board, maximizing) {
+        if (detectHypotheticalWin('x')) {
+            return 1;
+        }
+
+        else if (detectHypotheticalWin('o')) {
+            return -1;
+        }
+
+        else if (detectHypotheticalDraw()) {
+            return 0;
+        }
+
+        if (maximizing) {
+            bestScore = -Infinity;
+
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === '') {
+                    board[i] = 'x';
+                    score = minimax(board, false);
+                    board[i] = '';
+                    if (score > bestScore) {
+                        bestScore = score;
+                    };
+                };
+            };
+
+            return bestScore;
+        }
+
+        else {
+            bestScore = Infinity;
+
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === '') {
+                    board[i] = 'o';
+                    score = minimax(board, true);
+                    board[i] = '';
+                    if (score < bestScore) {
+                        bestScore = score;
+                    };
+                };
+            };
+
+            return bestScore;
+        }
     };
 
     const handleWin = function (winner) {
