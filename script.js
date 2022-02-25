@@ -10,6 +10,8 @@ const gameBoard = (() => {
     const startGameBtn = documentMain.querySelector('.startGame');
     const playerOneInput = documentMain.querySelector('.playerOneName');
     const playerTwoInput = documentMain.querySelector('.playerTwoName');
+    const playerOneAIInput = documentMain.querySelector('.playerOneAIInput');
+    const playerTwoAIInput = documentMain.querySelector('.playerTwoAIInput');
     const playerOneFormValidation = documentMain.querySelector('.formValidation.one');
     const playerTwoFormValidation = documentMain.querySelector('.formValidation.two');
 
@@ -19,8 +21,10 @@ const gameBoard = (() => {
     for (let i = 0; i < documentBoard.childElementCount; i++) {
         documentBoard.children[i].addEventListener('click',
             e => {
-                if (e.currentTarget.classList[2] !== 'x' && e.currentTarget.classList[2] !== '') {
-                    populateBoard(e.currentTarget);
+                if ((playerOneTurn && !playerOne.AI) || (!playerOne && !playerTwo.AI)) {
+                    if (e.currentTarget.classList[2] !== 'x' && e.currentTarget.classList[2] !== '') {
+                        populateBoard(e.currentTarget);
+                    };
                 };
             });
     };
@@ -59,16 +63,16 @@ const gameBoard = (() => {
     // DISPLAY STUFF
     const renderBoard = function () {
         if (playerOneTurn) {
-            documentBoard.classList.replace('o', 'x');
+            documentBoard.classList.replace(playerTwo.symbol, playerOne.symbol);
         } else {
-            documentBoard.classList.replace('x', 'o');
+            documentBoard.classList.replace(playerOne.symbol, playerTwo.symbol);
         };
 
         for (let i = 0; i < board.length; i++) {
             if (board[i] === 'x' || board[i] === 'o') {
                 documentBoard.children[i].classList.add(board[i]);
             } else {
-                documentBoard.children[i].classList.remove('o', 'x');
+                documentBoard.children[i].classList.remove(playerTwo.symbol, playerOne.symbol);
             }
         };
     };
@@ -83,9 +87,9 @@ const gameBoard = (() => {
 
     const populateBoard = function (cell) {
         if (playerOneTurn) {
-            board[parseInt(cell.classList[1])] = 'x';
+            board[parseInt(cell.classList[1])] = playerOne.symbol;
         } else {
-            board[parseInt(cell.classList[1])] = 'o';
+            board[parseInt(cell.classList[1])] = playerTwo.symbol;
         };
 
 
@@ -106,6 +110,18 @@ const gameBoard = (() => {
             playerOneTurn = !playerOneTurn;
             renderBoard();
             renderCurrentTurnBtn();
+
+            if (playerOneTurn && playerOne.AI) {
+                setTimeout(function () {
+                    AImove(playerOne.symbol);
+                }, 2000);
+            }
+
+            else if (!playerOneTurn && playerTwo.AI) {
+                setTimeout(function () {
+                    AImove(playerTwo.symbol);
+                }, 2000);
+            };
         }
     };
 
@@ -181,6 +197,19 @@ const gameBoard = (() => {
         documentMain.children[1].classList.toggle('blur');
     }
 
+    const AImove = function (aiSymbol) {
+
+        let randomGuess = Math.floor(Math.random() * (8 - 0 + 1) + 0);
+
+        if (board[randomGuess] !== '') {
+            AImove(aiSymbol);
+        } else {
+            populateBoard(documentBoard.children[randomGuess]);
+
+        }
+
+    };
+
     const handleWin = function (winner) {
         clearBoard();
 
@@ -201,6 +230,19 @@ const gameBoard = (() => {
 
     const resetGame = function () {
         renderCurrentTurnBtn();
+
+        if (playerOneTurn && playerOne.AI) {
+            setTimeout(function () {
+                AImove(playerOne.symbol);
+            }, 2000);
+        }
+
+        else if (!playerOneTurn && playerTwo.AI) {
+            setTimeout(function () {
+                AImove(playerTwo.symbol);
+            }, 2000);
+        };
+
         toggleScreen(winningScreen);
         clearBoard();
         renderBoard();
@@ -209,6 +251,19 @@ const gameBoard = (() => {
     const startGame = function () {
         if (getInput() === true) {
             renderCurrentTurnBtn();
+
+            if (playerOneTurn && playerOne.AI) {
+                setTimeout(function () {
+                    AImove(playerOne.symbol);
+                }, 2000);
+            }
+
+            else if (!playerOneTurn && playerTwo.AI) {
+                setTimeout(function () {
+                    AImove(playerTwo.symbol);
+                }, 2000);
+            };
+
             toggleScreen(changePlayersScreen);
             clearBoard();
             renderBoard();
@@ -236,8 +291,8 @@ const gameBoard = (() => {
 
             return false;
         } else {
-            playerOne = Player(playerOneName, 'x', false);
-            playerTwo = Player(playerTwoName, 'o', false);
+            playerOne = Player(playerOneName, 'x', playerOneAIInput.checked);
+            playerTwo = Player(playerTwoName, 'o', playerTwoAIInput.checked);
 
             playerOneFormValidation.classList.remove('show');
             playerTwoFormValidation.classList.remove('show');
