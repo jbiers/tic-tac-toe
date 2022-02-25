@@ -54,6 +54,7 @@ const gameBoard = (() => {
     ];
 
     let winCondition = false;
+    let drawCondition = false;
 
     // DISPLAY STUFF
     const renderBoard = function () {
@@ -95,7 +96,13 @@ const gameBoard = (() => {
                 handleWin(playerTwo.name);
             }
 
-        } else {
+        }
+
+        else if (detectDraw()) {
+            handleDraw();
+        }
+
+        else {
             playerOneTurn = !playerOneTurn;
             renderBoard();
             renderCurrentTurnBtn();
@@ -147,6 +154,20 @@ const gameBoard = (() => {
         return winCondition;
     };
 
+    const detectDraw = function () {
+        for (let i = 0; i < board.length; i++) {
+            if (board[i] === '') {
+                drawCondition = false;
+                return drawCondition;
+            };
+        };
+
+        if (!winCondition) {
+            drawCondition = true;
+            return drawCondition;
+        };
+    };
+
     const clearBoard = function () {
         for (let i = 0; i < board.length; i++) {
             board[i] = '';
@@ -167,6 +188,15 @@ const gameBoard = (() => {
         winningScreen.children[0].innerHTML = `${winner} wins this round!`
         toggleScreen(winningScreen);
         winCondition = false;
+    };
+
+    const handleDraw = function () {
+        clearBoard();
+        renderBoard();
+        winningScreen.children[0].innerHTML = `Game ended in a draw!`;
+        toggleScreen(winningScreen);
+
+        drawCondition = false;
     };
 
     const resetGame = function () {
