@@ -12,7 +12,6 @@ Tic-tac-toe project for The Odin Project course.
     -- Form Validation ***********************
     -- Create players based on input
     -- Show players names
--- Keep track of playes scores
 -- Detect draws
 -- Implement algorithm
 -- Make it pretty
